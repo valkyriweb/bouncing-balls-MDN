@@ -1,9 +1,6 @@
-// define variable for ball count paragraph
 
 var para = document.querySelector('p');
 var count = 0;
-
-// setup canvas
 
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
@@ -18,8 +15,6 @@ function random(min,max) {
   return num;
 }
 
-// define shape constructor
-
 function Shape(x, y, velX, velY, exists) {
   this.x = x;
   this.y = y;
@@ -28,19 +23,17 @@ function Shape(x, y, velX, velY, exists) {
   this.exists = exists;
 }
 
-// define Ball constructor, inheriting from Shape
-
 function Ball(x, y, velX, velY, exists, color, size) {
   Shape.call(this, x, y, velX, velY, exists);
 
   this.color = color;
   this.size = size;
 }
-
+// Inheritance from shape.prototype
 Ball.prototype = Object.create(Shape.prototype);
 Ball.prototype.constructor = Ball;
 
-// define ball draw method
+//ball draw method
 
 Ball.prototype.draw = function() {
   ctx.beginPath();
@@ -91,7 +84,7 @@ Ball.prototype.collisionDetect = function() {
 
 
 
-// define EvilCircle constructor, inheriting from Shape
+// define EvilCircle constructor, inheriting from Shape and changing color, size and velocity.
 
 function EvilCircle(x, y, exists) {
   Shape.call(this, x, y, exists);
@@ -102,11 +95,13 @@ function EvilCircle(x, y, exists) {
   this.velY = 20;
 }
 
+//Prototype inheritance, study inheritance more.
+
 EvilCircle.prototype = Object.create(Shape.prototype);
 EvilCircle.prototype.constructor = EvilCircle;
 
 
-// define EvilCircle draw method
+// define EvilCircle draw method, similar to Ball.prototype.draw method. Stroked instead of fill.
 
 EvilCircle.prototype.draw = function() {
   ctx.beginPath();
@@ -117,7 +112,7 @@ EvilCircle.prototype.draw = function() {
 };
 
 
-// define EvilCircle checkBounds method
+// define EvilCircle checkBounds method, renamed this incorrectly had issues calling method.
 
 EvilCircle.prototype.checkBounds = function() {
   if((this.x + this.size) >= width) {
@@ -137,24 +132,24 @@ EvilCircle.prototype.checkBounds = function() {
   }
 };
 
-// define EvilCircle setControls method
+// define EvilCircle setControls method, set controls to move the EvilCircle, named this method incorrectly
 
 EvilCircle.prototype.setControls = function() {
   var _this = this;
   window.onkeydown = function(e) {
-    if(e.keyCode === 65) { // a
+    if(e.keyCode === 65) { // -->a
       _this.x -= _this.velX;
-    } else if(e.keyCode === 68) { // d
+    } else if(e.keyCode === 68) { // -->d
       _this.x += _this.velX;
-    } else if(e.keyCode === 87) { // w
+    } else if(e.keyCode === 87) { // -->w
       _this.y -= _this.velY;
-    } else if(e.keyCode === 83) { // s
+    } else if(e.keyCode === 83) { // -->s
       _this.y += _this.velY;
     }
   };
 };
 
-// define EvilCircle collision detection
+// define EvilCircle collision detection similar to ball collision detection, add an if statement for exists and ball counter.
 
 EvilCircle.prototype.collisionDetect = function() {
   for(var j = 0; j < balls.length; j++) {
@@ -180,7 +175,7 @@ var balls = [];
 
 // define loop that keeps drawing the scene constantly
 
-var evil = new EvilCircle(random(0,width), random(0,height), true);
+var evil = new EvilCircle(random(0,width), random(0,height), true); // setting EvilCircle = evil and defining parameters.
 evil.setControls();
 
 function loop() {
@@ -209,7 +204,7 @@ function loop() {
       balls[i].collisionDetect();
     }
   }
-
+// calling evil methods.
   evil.draw();
   evil.checkBounds();
   evil.collisionDetect();
